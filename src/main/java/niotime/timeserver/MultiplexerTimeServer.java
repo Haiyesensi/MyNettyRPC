@@ -52,17 +52,16 @@ public class MultiplexerTimeServer implements Runnable {
                     } catch (Exception e) {
                         if (key != null) {
                             key.cancel();
-                            if (key.channel() != null) key.channel().close();
+                            if (key.channel() != null) {
+                                key.channel().close();
+                            }
                         }
                     }
                 }
-
-
             } catch (Throwable t) {
                 t.printStackTrace();
             }
         }
-
         if (selector != null) {
             try {
                 selector.close();
