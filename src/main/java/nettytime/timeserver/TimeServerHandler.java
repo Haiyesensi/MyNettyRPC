@@ -9,15 +9,17 @@ import java.io.UnsupportedEncodingException;
 
 
 public class TimeServerHandler extends ChannelHandlerAdapter {
+    private int count;
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws UnsupportedEncodingException {
-        ByteBuf buffer = (ByteBuf) msg;
-        byte[] req = new byte[buffer.readableBytes()];
-        buffer.readBytes(req);
-        String body = new String(req, "UTF-8");
-        System.out.println("The time server recieved order : " + body);
+//        ByteBuf buffer = (ByteBuf) msg;
+//        byte[] req = new byte[buffer.readableBytes()];
+//        buffer.readBytes(req);
+        String body = (String) msg;//new String(req, "UTF-8");
+        System.out.println(++count + "The time server recieved order : " + body);
         String currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new java.util.Date(System.currentTimeMillis()).toString() : "BAD ORDER";
+        currentTime = currentTime + System.getProperty("line.separator");
         ByteBuf resp = Unpooled.copiedBuffer(currentTime.getBytes());
         ctx.write(resp);
     }
